@@ -24,7 +24,23 @@ enum LsrStatus {
 #[allow(non_snake_case)]
 struct Registers {
     // FIXME: Declare the "MU" registers from page 8.
+0x7E21 5040 MU_IO_REG: [Mini Uart I/O Data 8
+0x7E21 5044 MU_IER_REG Mini Uart Interrupt Enable 8
+0x7E21 5048 MU_IIR_REG Mini Uart Interrupt Identify 8
+0x7E21 504C MU_LCR_REG Mini Uart Line Control 8
+0x7E21 5050 MU_MCR_REG Mini Uart Modem Control 8
+0x7E21 5054 MU_LSR_REG Mini Uart Line Status 8
+0x7E21 5058 MU_MSR_REG Mini Uart Modem Status 8
+0x7E21 505C MU_SCRATCH Mini Uart Scratch 8
+0x7E21 5060 MU_CNTL_REG Mini Uart Extra Control 8
+0x7E21 5064 MU_STAT_REG Mini Uart Extra Status 32
+0x7E21 5068 MU_BAUD_REG Mini Uart Baudrate 16 
 }
+
+    // FSEL: [Volatile<u32>; 6],
+    // __r0: Reserved<u32>,
+    // SET: [WriteVolatile<u32>; 2],
+    // __r1: Reserved<u32>,
 
 /// The Raspberry Pi's "mini UART".
 pub struct MiniUart {
