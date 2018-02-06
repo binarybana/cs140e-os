@@ -57,11 +57,11 @@ impl MiniUart {
             &mut *(MU_REG_BASE as *mut Registers)
         };
 
-        registers.MU_BAUD_REG.write(270);
-        registers.MU_LCR_REG.write(0b11);
-
         Gpio::new(14).into_alt(Function::Alt5);
         Gpio::new(15).into_alt(Function::Alt5);
+
+        registers.MU_BAUD_REG.write(270);
+        registers.MU_LCR_REG.write(0b11);
 
         registers.MU_CNTL_REG.write(0b11);
         MiniUart { registers, timeout: None }
