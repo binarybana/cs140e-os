@@ -46,6 +46,7 @@ pub fn blink(times: u8, interval: u64) {
 pub fn echo() {
     use pi::timer::spin_sleep_ms;
     use pi::uart::MiniUart;
+    use std::fmt::Write;
 
     let mut uart = MiniUart::new();
 
@@ -56,11 +57,29 @@ pub fn echo() {
     }
 }
 
+pub fn shell() {
+    use console::{kprint, kprintln};
+    use std::fmt::Write;
+    use pi::timer::spin_sleep_ms;
+    loop {
+        kprintln!("Hello world");
+        kprint!("Hello to ");
+        kprint!("you too!");
+        spin_sleep_ms(200);
+    }
+    // let mut console = console::CONSOLE.lock();
+    // loop {
+    //     console.write_str("\n<-");
+    //     let b = console.read_byte();
+    //     console.write_byte(b);
+    //     // kprintln!("$ {}", b);
+    // }
+}
+
 #[no_mangle]
 pub extern "C" fn kmain() {
     // blink(3, 1000);
-
-
-    echo();
-    // FIXME: Start the shell.
+    // echo();
+    // shell();
+    shell::shell("> ");
 }
