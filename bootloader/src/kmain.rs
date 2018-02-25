@@ -25,5 +25,9 @@ fn jump_to(addr: *mut u8) -> ! {
 
 #[no_mangle]
 pub extern "C" fn kmain() {
-    // FIXME: Implement the bootloader.
+    let uart = pi::uart::MiniUart::new();
+    uart.set_read_timeout(500);
+    let mut sink = unsafe { BINARY_START as &mut [u8] };
+    while xmodem::Xmodem::receive(uart, sink).is_err() { }
+    jump_to(BINARY_START);
 }
