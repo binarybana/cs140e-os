@@ -50,15 +50,15 @@ pub fn echo() {
     let mut uart = MiniUart::new();
 
     loop {
+        uart.write_str("\n<-");
         let byte = uart.read_byte();
         uart.write_byte(byte);
-        blink(1, 200);
     }
 }
 
 #[no_mangle]
 pub extern "C" fn kmain() {
-    blink(3, 1000);
+    // blink(3, 1000);
 
 
     echo();

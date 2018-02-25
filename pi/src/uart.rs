@@ -119,6 +119,9 @@ impl MiniUart {
 impl fmt::Write for MiniUart {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         for b in s.bytes() {
+            if b == b'\n' {
+                self.write_byte(b'\r');
+            }
             self.write_byte(b);
         }
         Ok(())

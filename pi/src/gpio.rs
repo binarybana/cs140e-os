@@ -102,16 +102,10 @@ impl Gpio<Uninitialized> {
     /// Enables the alternative function `function` for `self`. Consumes self
     /// and returns a `Gpio` structure in the `Alt` state.
     pub fn into_alt(self, function: Function) -> Gpio<Alt> {
-        let (fsel, offset) = match self.pin {
-            pin @ 0...9   => (0, 3*pin),
-            pin @ 10...19 => (1, 3*(pin-10)),
-            pin @ 20...29 => (2, 3*(pin-20)),
-            pin @ 30...39 => (3, 3*(pin-30)),
-            pin @ 40...49 => (4, 3*(pin-40)),
-            pin @ 50...53 => (5, 3*(pin-50)),
-            _ => (0, 0), // Hmm.. can I panic in here? Rather than silently fail
-        };
-        self.registers.FSEL[fsel].write((function as u32) << offset);
+        let fsel = self.pin as usize / 10;
+        let offset = (self.pin as usize % 10) * 3;
+        let val = self.registers.FSEL[fsel].read() & !(0b111 << offset) | ((function as u32) << offset);
+        self.registers.FSEL[fsel].write(val);
         self.transition()
     }
 
